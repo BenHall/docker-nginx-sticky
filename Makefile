@@ -1,12 +1,13 @@
 IMAGE=benhall/nginx-sticky
+TAG=1.9.7
 
 default: build
 
 build:
-	docker build -t $(IMAGE) .
+	docker build -t $(IMAGE):$(TAG) .
 
 test:
-	docker run -p 80 -d --name nginx-sticky $(IMAGE)
+	docker run -p 80 -d --name nginx-sticky $(IMAGE):$(TAG)
 
 push:
-	docker push $(IMAGE)
+	docker push $(IMAGE):$(TAG)
