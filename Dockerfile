@@ -38,6 +38,8 @@ RUN \
   echo "\ndaemon off;" >> /etc/nginx/nginx.conf && \
   rm -rf ~/sources
 
+COPY nginx.conf /etc/nginx/nginx.conf
+
 VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx"]
 
 WORKDIR /etc/nginx
