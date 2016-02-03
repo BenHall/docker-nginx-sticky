@@ -1,5 +1,5 @@
 IMAGE=benhall/nginx-sticky
-TAG=1.9.7
+TAG=1.9.10
 
 default: build
 

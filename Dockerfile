@@ -6,10 +6,21 @@ RUN \
   apt-get -y upgrade && \
   apt-get install -y build-essential && \
   apt-get install -y software-properties-common && \
-  apt-get install -y wget git && \
+  apt-get install -y wget git unzip && \
   rm -rf /var/lib/apt/lists/*
 
-ENV NGINX 1.9.7
+ENV NPS_VERSION 1.10.33.4
+
+ENV NGINX 1.9.10
+
+RUN \
+  wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip -O release-${NPS_VERSION}-beta.zip && \
+  unzip release-${NPS_VERSION}-beta.zip && \ 
+  cd ngx_pagespeed-release-${NPS_VERSION}-beta/ && \ 
+  wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz && \ 
+  tar -xzvf ${NPS_VERSION}.tar.gz
+
+ENV PS_NGX_EXTRA_FLAGS "--with-cc=/usr/lib/gcc-mozilla/bin/gcc  --with-ld-opt=-static-libstdc++"
 
 RUN \
   add-apt-repository -y ppa:nginx/stable && \
@@ -34,10 +45,13 @@ RUN \
     --with-http_stub_status_module \
     --with-http_realip_module \
     --with-ipv6 \
+    --with-http_v2_module \
     --add-module=/root/sources/nginx-sticky-module-ng && \
+    --add-module=/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS} \
   make && \
   make install && \
-  rm -rf ~/sources
+  rm -rf ~/sources && \
+  rm -rf /ngx_pagespeed-release-${NPS_VERSION}-beta/ 
 
 RUN useradd nginx
 COPY nginx.conf /etc/nginx/nginx.conf
