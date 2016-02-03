@@ -20,8 +20,6 @@ RUN \
   wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz && \ 
   tar -xzvf ${NPS_VERSION}.tar.gz
 
-ENV PS_NGX_EXTRA_FLAGS "--with-cc=/usr/lib/gcc-mozilla/bin/gcc  --with-ld-opt=-static-libstdc++"
-
 RUN \
   add-apt-repository -y ppa:nginx/stable && \
   apt-get update && \
@@ -46,8 +44,8 @@ RUN \
     --with-http_realip_module \
     --with-ipv6 \
     --with-http_v2_module \
-    --add-module=/root/sources/nginx-sticky-module-ng && \
-    --add-module=/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS} \
+    --add-module=/root/sources/nginx-sticky-module-ng \
+    --add-module=/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS} && \
   make && \
   make install && \
   rm -rf ~/sources && \
