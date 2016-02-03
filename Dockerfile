@@ -52,12 +52,15 @@ RUN \
   rm -rf /ngx_pagespeed-release-${NPS_VERSION}-beta/ 
 
 RUN useradd nginx
-COPY nginx.conf /etc/nginx/nginx.conf
 
 VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/var/log/nginx"]
 
 WORKDIR /etc/nginx
 
-CMD ["/usr/sbin/nginx"]
+# forward request and error logs to docker log collector
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+  && ln -sf /dev/stderr /var/log/nginx/error.log
+
+CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 
 EXPOSE 80 443
