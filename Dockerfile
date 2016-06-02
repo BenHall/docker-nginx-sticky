@@ -11,16 +11,16 @@ RUN \
 
 ENV NPS_VERSION 1.10.33.4
 
-ENV NGINX 1.9.10
+ENV NGINX 1.11.1
 
 RUN \
   mkdir ~/sources && \
-  cd ~/sources && \
-  wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip -O release-${NPS_VERSION}-beta.zip && \
-  unzip release-${NPS_VERSION}-beta.zip && \ 
-  cd ~/sources/ngx_pagespeed-release-${NPS_VERSION}-beta/ && \ 
-  wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz && \ 
-  tar -xzvf ${NPS_VERSION}.tar.gz && \
+  #cd ~/sources && \
+  #wget https://github.com/pagespeed/ngx_pagespeed/archive/release-${NPS_VERSION}-beta.zip -O release-${NPS_VERSION}-beta.zip && \
+  #unzip release-${NPS_VERSION}-beta.zip && \ 
+  #cd ~/sources/ngx_pagespeed-release-${NPS_VERSION}-beta/ && \ 
+  #wget https://dl.google.com/dl/page-speed/psol/${NPS_VERSION}.tar.gz && \ 
+  #tar -xzvf ${NPS_VERSION}.tar.gz && \
   cd ~/sources && \
   add-apt-repository -y ppa:nginx/stable && \
   apt-get update && \
@@ -43,8 +43,8 @@ RUN \
     --with-http_realip_module \
     --with-ipv6 \
     --with-http_v2_module \
-    --add-module=/root/sources/nginx-sticky-module-ng \
-    --add-module=/root/sources/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS} && \
+    --add-module=/root/sources/nginx-sticky-module-ng && \
+    # --add-module=/root/sources/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS} && \
   make && \
   make install && \
   rm -rf ~/sources
