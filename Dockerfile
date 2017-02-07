@@ -11,7 +11,7 @@ RUN \
 
 ENV NPS_VERSION 1.10.33.4
 
-ENV NGINX 1.11.1
+ENV NGINX 1.11.9
 
 RUN \
   mkdir ~/sources && \
@@ -41,10 +41,8 @@ RUN \
     --with-http_gzip_static_module \
     --with-http_stub_status_module \
     --with-http_realip_module \
-    --with-ipv6 \
     --with-http_v2_module \
     --add-module=/root/sources/nginx-sticky-module-ng && \
-    # --add-module=/root/sources/ngx_pagespeed-release-${NPS_VERSION}-beta ${PS_NGX_EXTRA_FLAGS} && \
   make && \
   make install && \
   rm -rf ~/sources
@@ -60,5 +58,7 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
   && ln -sf /dev/stderr /var/log/nginx/error.log
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80 443
