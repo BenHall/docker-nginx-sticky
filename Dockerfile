@@ -32,6 +32,7 @@ RUN \
     git clone https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng.git && \
     git clone https://github.com/yaoweibin/nginx_upstream_check_module.git && \
   cd nginx-$NGINX && \
+  patch -p0 < /root/sources/nginx_upstream_check_module/check_1.11.5+.patch && \
   ./configure \
     --prefix=/etc/nginx \
     --conf-path=/etc/nginx/nginx.conf \
