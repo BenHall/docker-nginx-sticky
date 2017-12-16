@@ -11,7 +11,7 @@ RUN \
 
 ENV NPS_VERSION 1.10.33.4
 
-ENV NGINX 1.11.10
+ENV NGINX 1.11.11
 
 RUN \
     add-apt-repository -y ppa:nginx/stable && \
@@ -31,7 +31,10 @@ RUN \
     tar -zxvf nginx-$NGINX.tar.gz && \
     git clone https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng.git && \
     git clone https://github.com/yaoweibin/nginx_upstream_check_module.git && \
+    wget -O spdy.patch https://raw.githubusercontent.com/cloudflare/sslconfig/master/patches/nginx__1.11.11_http2_spdy.patch && \
   cd nginx-$NGINX && \
+  ls -lha && \
+  patch -p1 < /root/sources/spdy.patch && \
   patch -p0 < /root/sources/nginx_upstream_check_module/check_1.11.5+.patch && \
   ./configure \
     --prefix=/etc/nginx \
@@ -45,6 +48,7 @@ RUN \
     --with-http_stub_status_module \
     --with-http_realip_module \
     --with-http_v2_module \
+    --with-http_spdy_module \
     --add-module=/root/sources/nginx-sticky-module-ng \
     --add-module=/root/sources/nginx_upstream_check_module && \
   make && \
