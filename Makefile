@@ -1,5 +1,5 @@
 IMAGE=benhall/nginx-sticky
-TAG=1.11.11
+TAG=1.11.11-spdy
 
 default: build
 
